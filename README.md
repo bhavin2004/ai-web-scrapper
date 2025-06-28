@@ -51,7 +51,7 @@ pip install -r requirements.txt
 ### 3. Run the Scraper
 
 ```bash
-python scraper.py
+streamlit run main.py
 ```
 
 > Make sure you have Google Chrome installed and accessible in PATH.
