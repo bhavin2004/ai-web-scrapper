@@ -60,7 +60,7 @@ Open the printed local URL (usually http://localhost:8501) in your browser.
 ## 🖼️ Demo Screenshot
 
 <p align="center">
-  <img src="image.png" alt="App screenshot" width="650">
+  <img src="image.png" alt="App screenshot" width="auto">
 </p>
 
 ---
