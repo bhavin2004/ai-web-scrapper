@@ -1,101 +1,135 @@
 # 🕷️ AI Web Scrapper
 
-[![Deploy on Render](https://img.shields.io/badge/Live-Demo-brightgreen)](https://ai-web-scrapper-gorl.onrender.com)
+    [![Render Live](https://img.shields.io/badge/demo-live-green?logo=render)](https://ai-web-scrapper-gorl.onrender.com)
+    [![Python](https://img.shields.io/badge/python-3.8%2B-blue?logo=python)](https://www.python.org/)
+    [![Streamlit](https://img.shields.io/badge/built%20with-Streamlit-red?logo=streamlit)](https://streamlit.io/)
 
-An AI-assisted web scraper built using **Selenium**, **BeautifulSoup**, and **undetected-chromedriver** to automate data extraction from websites, with intelligent browsing behavior to bypass bot detection.
+    An **AI‑assisted, GUI‑based** web‑scraper that combines **Selenium**, **BeautifulSoup**, and **OpenAI GPT‑4** to pull structured data from almost any website.  
+    It mimics natural browsing behaviour with **undetected‑chromedriver**, funnels the raw HTML through a lightweight LLM prompt, and delivers tidy CSV output – all wrapped in a one‑page Streamlit app.
 
----
+    ---
 
-## 🔍 Features
+    ## ✨ Key Features
 
-- ✅ Automated web scraping using **Selenium + BeautifulSoup**
-- 🛡️ Avoids bot detection using `undetected-chromedriver`
-- ⚙️ Headless mode supported for server deployments
-- 📄 Extracts structured data and saves it to a file
-- ☁️ Deployed live on **Render**
+    | Capability | Details |
+    |------------|---------|
+    | 🚗 **Stealth Scraping** | Launches a headless Chrome via `undetected‑chromedriver` to reduce bot‑detection. |
+    | 🧠 **LLM‑Powered Parsing** | Uses an OpenAI completion to *extract only the fields you describe* and returns valid CSV. |
+    | 🖥️ **Streamlit UI** | One‑click “Scrape → Parse → Download” workflow – perfect for non‑coders. |
+    | 📸 **Automatic Screenshot** | Saves a full‑page PNG every time a page is scraped. |
+    | ☁️ **Ready for Render** | Ships with a working Render deployment (see live demo above). |
 
----
+    ---
 
-## 🚀 Live Demo
+    ## 🚀 Quick Start (Local)
 
-🔗 [Visit the deployed app on Render](https://ai-web-scrapper-gorl.onrender.com)
+    1. **Clone & move inside the repo**
 
----
+    ```bash
+    git clone https://github.com/bhavin2004/ai-web-scrapper.git
+    cd ai-web-scrapper
+    ```
 
-## 📦 Tech Stack
+    2. **Create a virtual env & install deps**
 
-- **Python 3.8+**
-- `selenium`
-- `bs4 (BeautifulSoup)`
-- `undetected-chromedriver`
-- `webdriver-manager`
-- `Render` (for deployment)
+    ```bash
+    python -m venv venv && source venv/bin/activate   # Windows: venv\\Scripts\\activate
+    pip install -r requirements.txt
+    ```
 
----
+    3. **Add your OpenAI / GitHub token**
 
-## 🧪 How to Run Locally
+    Create a `.env` file in the project root:
 
-### 1. Clone the Repo
+    ```dotenv
+    GITHUB_TOKEN=sk‑your‑token‑here
+    ```
 
-```bash
-git clone https://github.com/bhavin2004/ai-web-scrapper.git
-cd ai-web-scrapper
-```
+    The token is used for authenticated calls to the hosted GPT‑4 endpoint inside `parse.py`.
 
-### 2. Install Dependencies
+    4. **Run the app**
 
-```bash
-pip install -r requirements.txt
-```
+    ```bash
+    streamlit run main.py
+    ```
 
-### 3. Run the Scraper
+    Open the printed local URL (usually http://localhost:8501) in your browser.
 
-```bash
-streamlit run main.py
-```
+    ---
 
-> Make sure you have Google Chrome installed and accessible in PATH.
+    ## 🖼️ Demo Screenshot
 
----
+    <p align="center">
+      <img src="screenshot.png" alt="App screenshot" width="650">
+    </p>
 
-## 🧠 How It Works
+    ---
 
-1. Launches a headless Chrome browser with stealth options.
-2. Navigates to the target site (e.g., search via Google to mimic user behavior).
-3. Parses page content using BeautifulSoup.
-4. Extracts specific elements (titles, links, etc.).
-5. Saves structured data (CSV/JSON format).
+    ## 🏗️ Project Layout
 
----
+    ```
+    .
+    ├── main.py           # Streamlit front‑end (UI + workflow)
+    ├── scrape.py         # Selenium scraping helpers
+    ├── parse.py          # GPT‑powered parser → CSV
+    ├── requirements.txt  # Python dependencies
+    ├── .gitignore        # Useful exclusions
+    └── screenshot.png    # Example output image
+    ```
 
-## 📁 Project Structure
+    ---
 
-```
-├── scraper.py              # Main scraper logic
-├── requirements.txt        # All Python dependencies
-├── README.md               # This file
-```
+    ## ⚙️ How It Works
 
----
+    1. **Scrape** – `scrape_website()` opens the target URL, stores `page_source`, and saves a screenshot.  
+    2. **Clean** – The `<body>` is stripped of script/style tags; text is normalised.  
+    3. **Chunk** – Large DOMs are split into ~6 kB segments for the model.  
+    4. **Parse** – Each chunk is sent to GPT‑4 with a strict *“CSV‑only”* system prompt.  
+    5. **Merge & Download** – Headers are deduplicated, rows concatenated, a CSV is streamed back to the user.
 
-## 📌 Deployment Notes (Render)
+    ---
 
-- This app is deployed as a **background web service** on [Render](https://render.com).
-- Headless mode is activated for remote scraping.
-- Ephemeral storage: scraped files won't persist unless uploaded externally (add Google Drive integration if needed).
+    ## 🌐 One‑Click Deploy on Render
 
----
+    Create a new **Web Service** on [Render](https://render.com):
 
-## 🛠️ Future Improvements
+    | Setting | Value |
+    |---------|-------|
+    | **Build Command** | `pip install -r requirements.txt` |
+    | **Start Command** | `streamlit run main.py --server.port $PORT --server.address 0.0.0.0` |
+    | **Instance Type** | Starter instance (free tier) |
 
-- Add support for multiple target websites
-- Integrate proxy rotation / CAPTCHA solving
-- Export results to Google Sheets or Drive
-- Add Streamlit dashboard to visualize scraped data
+    Ephemeral storage means the CSV is available to download in‑session only – integrate Google Drive or S3 if you need persistence.
 
----
+    ---
 
-## 📬 Contact
+    ## 🛣️ Roadmap
 
-Created with ❤️ by **Bhavin Karangia**  
-📧 [LinkedIn](https://www.linkedin.com/in/bhavin-karangia) • 🌐 [Portfolio Coming Soon]
+    - [ ] Multi‑site scraping presets  
+    - [ ] Proxy rotation & human‑like mouse movement  
+    - [ ] Streamlit Cloud deployment  
+    - [ ] Unit tests (pytest + CI)
+
+    ---
+
+    ## 🤝 Contributing
+
+    Pull requests are welcome! Please open an issue first to discuss major changes.
+
+    1. Fork the repo & create a feature branch (`git checkout -b feat/my-feature`)  
+    2. Commit your changes (`git commit -am 'Add amazing feature'`)  
+    3. Push to the branch (`git push origin feat/my-feature`)  
+    4. Open a PR ✨
+
+    ---
+
+    ## 📝 License
+
+    This project is released under the **MIT License** – see [`LICENSE`](LICENSE) for details.
+
+    ---
+
+    ## 📬 Contact
+
+    **Bhavin Karangia** – reach me on [LinkedIn](https://www.linkedin.com/in/bhavin-karangia)  
+    If you use this project, I’d love to hear about it!
