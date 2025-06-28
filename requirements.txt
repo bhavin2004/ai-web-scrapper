@@ -4,3 +4,4 @@ pandas
 beautifulsoup4
 streamlit
 openai
+undetected-chromedriver==3.5.5

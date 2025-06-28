@@ -1,10 +1,10 @@
-import selenium.webdriver as webdriver
+import undetected_chromedriver as uc
 from bs4 import BeautifulSoup
 from selenium.webdriver.chrome.service import Service
 
 def scrape_website(website_url):
     # service= Service(executable_path='chromedriver')  
-    options = webdriver.ChromeOptions()
+    options = uc.ChromeOptions()
     options.add_argument('--disable-gpu')
     options.add_argument('--headless') 
     options.add_argument('--no-sandbox')
@@ -12,7 +12,7 @@ def scrape_website(website_url):
     options.add_argument('--window-size=1920,1080')  # Set a default window size
     options.add_argument('--ignore-certificate-errors')  # Ignore SSL errors
     options.add_argument('--allow-running-insecure-content')  # Allow insecure content
-    driver = webdriver.Chrome(options=options)
+    driver = uc.Chrome(options=options)
     
     try:
         driver.get(website_url)
