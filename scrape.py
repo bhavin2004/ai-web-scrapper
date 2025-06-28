@@ -1,6 +1,7 @@
 import undetected_chromedriver as uc
 from bs4 import BeautifulSoup
 from selenium.webdriver.chrome.service import Service
+from webdriver_manager.chrome import ChromeDriverManager
 
 def scrape_website(website_url):
     # service= Service(executable_path='chromedriver')  
@@ -12,8 +13,8 @@ def scrape_website(website_url):
     options.add_argument('--window-size=1920,1080')  # Set a default window size
     options.add_argument('--ignore-certificate-errors')  # Ignore SSL errors
     options.add_argument('--allow-running-insecure-content')  # Allow insecure content
-    driver = uc.Chrome(options=options)
-    
+    service = Service(ChromeDriverManager().install())
+    driver = uc.Chrome(service=service, options=options)
     try:
         driver.get(website_url)
         driver.save_screenshot('screenshot.png')  
